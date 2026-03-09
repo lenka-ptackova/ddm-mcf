@@ -1,11 +1,11 @@
-"""Uploading and comparison of meshes in the .obj file format, the methods
-support any polygonal meshes
+"""Provides various methods for the comparison of geometry of two (sets of)
+polygonal meshes, which must have the same topology and.obj file format.
 
 Copyright (C) 2025, Lenka Ptackova
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License 
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License 
 
-This script is a part of implementation of
+This script is a part of implementation of methods supporting the paper
 'Domain Decomposition for Mean Curvature Flow of Surface Polygonal Meshes'
 """
 
@@ -150,66 +150,37 @@ def plot_graphs(datafile_name: str) -> None:
 #### REFLECTING THE RELATIVE DISTANCES OF CORRESPONDING VERTICES
 #### =============================================================
 
-def average_edge_length(V: np.ndarray, mesh_type:str,\
-                        indices: np.ndarray, nVinRow: int, nCols: int)\
-                        -> np.ndarray:    
-    averg_edge_lengths = np.zeros(len(indices))   
-    if mesh_type == "quad":
-        for ind in [-1, 1, -nVinRow, nVinRow]:
-            averg_edge_lengths += np.linalg.norm(V[indices + ind] -\
-                                                 V[indices], axis = 1)/4
-    elif mesh_type == "tri":
-        for ind in [-1, 1, -nVinRow, nVinRow, -nVinRow - 1, nVinRow + 1]:
-            averg_edge_lengths += np.linalg.norm(V[indices + ind] -\
-                                                 V[indices], axis = 1)/6
-    elif mesh_type == "hex":
-        odds = np.arange(0, len(indices), 2 , dtype = np.int32)
-        evens = np.arange(1, len(indices), 2 , dtype = np.int32)
-        averg_edge_lengths[odds] += ()                                               
-        
-        print("ups")
-    else:
-        print("Unknown mesh mesh type")
-        return None               
-    return averg_edge_lengths
+def plot_distances_on_axis(fig, ax, mesh1_name: str, mesh2_name: str):
+    """Computes the distances of corresponding vertices and divides
+    them by the average edge lenght of mesh1. Each vertex of mesh1
+    is then colored by the relative distance to the corresponding
+    vertex of mesh2. The colored vertices of mesh1 are then plotted
+    in axis ax of figure fig.
+    """
+    V1, H1, F1 = read_mesh_obj(mesh1_name + ".obj")
+    d0 = mm.create_d0(H1, V1)
+    averg_edge_length = np.mean(np.linalg.norm(d0@V1, axis = 1))
+    V2 = read_vertices(mesh2_name + ".obj")
 
-
-def plot_on_axis(fig, ax, mesh1_name: str, mesh2_name: str):
-    V_A = read_vertices(mesh1_name)
-    V_B = read_vertices(mesh2_name)
-    mesh_type = (mesh1_name.split("_")[0]).split("/")[-1]
-    nCols = 0
-    
-    if mesh_type == "tri" or mesh_type == "quad":
-        nVinRow = int(math.sqrt(len(V_A)))
-        preInterior = np.arange(0,len(V_A), dtype = np.int32).\
-                      reshape(nVinRow,nVinRow)
-        interior = (preInterior[1:nVinRow - 1, 1:nVinRow - 1]).flatten()        
-    elif mesh_type == "hex":
-        nVinRow = int(filename.split("_")[-1])
-        nCols = math.ceil(len(V)/nVinRow)
-        preInterior = np.arange(0,len(V_A)+2, dtype = np.int32).\
-                      reshape(nVinRow,nCols)
-        interior = (preInterior[1:nVinRow - 1, 1:nCols- 1] - 1).flatten()
-    else:
-        print("Unknown mesh mesh type")
-        return None
-
-    averg_edge_lengths = np.ones(len(V_A))
-    averg_edge_lengths[interior] = average_edge_length(V_A, mesh_type, interior,\
-                                                       nVinRow, nCols)
+    vertex_distances = np.linalg.norm(V1-V2, axis=1) 
 
     colormap = plt.get_cmap("Spectral_r",12)
-    coloring = np.linalg.norm(V_A-V_B, axis = 1)/averg_edge_lengths + 10**(-5)
-    p = ax.scatter(V_A[:,0], V_A[:,1], V_A[:,2],\
-                   norm = clrs.LogNorm(vmin = 10**(-5), vmax = 10), c = coloring,\
-                   cmap = colormap)   
+    coloring = vertex_distances/averg_edge_length
+    p = ax.scatter(V1[:,0], V1[:,1], V1[:,2], vmin = 0, vmax = 1.5,\
+                   c = coloring, cmap = colormap)
     ax.set_title((mesh2_name.split("/")[-1]).replace('.obj', ''))
     ax.grid(False)
     return p
 
 
-def plot_comparison(mesh1_names: list, mesh2_names: list) -> None:
+def plot_3D_comparison(mesh1_names: list, mesh2_names: list) -> None:
+    """The method takes in two lists containing filenames of meshes.
+    For each pair (mesh1_names[i] and mesh2_names[i]) a subfigure
+    of a 3D model will be ploted. Each subfigure is a scatter plot,
+    where vertices of mesh1_names[i] are colored by their distances
+    to the corresponding vertices of mesh2_names[i] divided by
+    the average edge lenght of mesh1_names[i] mesh.
+    """    
     if len(mesh1_names) != len(mesh2_names):
         print("Not the right number of meshes in lists")
         return None
@@ -217,52 +188,12 @@ def plot_comparison(mesh1_names: list, mesh2_names: list) -> None:
     cols = math.ceil(math.sqrt(len(mesh1_names)))
     rows = math.ceil(len(mesh1_names)/cols)
     fig = plt.figure(figsize = (12,12))
-    fig.suptitle("Relative displacement of corresponding vertices")
+    fig.suptitle("Relative distances of corresponding vertices")
     images = []
     for i in range(len(mesh1_names)):
         ax = fig.add_subplot(rows, cols, i+1, projection='3d')
-        images.append(plot_on_axis(fig, ax, mesh1_names[i], mesh2_names[i]))
-    fig.colorbar(images[-1],label = "Relative to the average length of incident edges")
+        images.append(plot_distances_on_axis(fig, ax, mesh1_names[i],\
+                                             mesh2_names[i]))
+    fig.colorbar(images[-1],label = "Relative to the average length")
     plt.show()
     return None
-
-def compare_two_meshes(mesh1_name: str, mesh2_name: str) -> None:
-    V_A = read_vertices(mesh1_name)
-    V_B = read_vertices(mesh2_name)
-
-    mesh_type = (mesh1_name.split("_")[0]).split("/")[-1]
-    
-    if mesh_type == "tri" or mesh_type == "quad":
-        nVinRow = int(math.sqrt(len(V_A)))
-        preInterior = np.arange(0,len(V_A), dtype = np.int32).reshape(nVinRow,nVinRow)
-        interior = preInterior[1:nVinRow - 1, 1:nVinRow - 1]
-        interior = interior.flatten()
-        
-    elif mesh_type == "hex":
-        nVinRow = int(filename.split("_")[-1])
-        first_inter_row = np.arange(nVinRow, 2*nVinRow-2, dtype = np.int32)
-       
-    else:
-        print("Unknown mesh mesh type")
-        return None
-
-    averg_edge_lengths = np.ones(len(V_A))
-    averg_edge_lengths[interior] = average_edge_length(V_A, mesh_type, interior, nVinRow)
-
-    fig, ax = plt.subplots(figsize = (10, 8), subplot_kw={'projection': '3d'})
-    colormap = plt.get_cmap("Spectral_r",12)
-
-    coloring = np.linalg.norm(V_A-V_B, axis = 1)/averg_edge_lengths + 10**(-5)
-    p = ax.scatter(V_A[:,0], V_A[:,1], V_A[:,2],\
-                   norm = clrs.LogNorm(vmin = 10**(-5), vmax = 10), c = coloring,\
-                   cmap = colormap)
-    
-    
-    ax.set_title(mesh2_name.split("/")[-1])
-    fig.colorbar(p, label = "Displacement relative to the average length of incident edges")
-    fig.tight_layout()
-    ax.grid(False)
-    plt.show()  
-    return None
-
-#### =============================================================

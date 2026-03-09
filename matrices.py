@@ -4,7 +4,7 @@ Copyright (C) 2025, Lenka Ptackova
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License 
 
-This script is a part of implementation of
+This script is a part of implementation of methods supporting the paper
 'Domain Decomposition for Mean Curvature Flow of Surface Polygonal Meshes'
 """
 
@@ -116,8 +116,8 @@ def calculate_area(face: list[int], V: np.ndarray) -> float:
 
 
 def W_matrices_PV(F: list[np.ndarray], V: np.ndarray) -> list[np.ndarray]:
-    """Creates matrices WF, W1, WV that are building blocks for discrete Hodge
-    star operators and therefore discrete Laplacians"""
+    """Creates matrices WF, W1, WV that are building blocks for the Laplacian
+    of [Ptackova & Velho 2021]"""
     vec_WF = np.zeros(len(F), dtype = float_precis)
     vec_inverse_WV = np.zeros(len(V), dtype = float_precis)
     list_W1 = []

@@ -1,11 +1,11 @@
 """Mesh smoothing by implicit mean curvature flow with domain decomposition
-and alternating Swarz method with overlap
+and alternating Schwarz method with overlap
 
 Copyright (C) 2025, Lenka Ptackova
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License 
 
-This script is a part of implementation of
+This script is a part of implementation of methods supporting the paper
 'Domain Decomposition for Mean Curvature Flow of Surface Polygonal Meshes'
 
 The method uses backward Euler scheme and Laplacian on vector-valued 0-forms

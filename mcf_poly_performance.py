@@ -1,12 +1,13 @@
 """Mesh smoothing by implicit mean curvature flow of surface polygonal
 meshes with or without boundary. If the mesh has a boundary, it is kept
-fixed. This script serves for measuring times.
+fixed. This script serves for measuring times and does not export smoothed
+meshes.
 
 Copyright (C) 2025, Lenka Ptackova
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License 
 
-This script is a part of implementation of
+This script is a part of implementation of methods supporting the paper
 'Domain Decomposition for Mean Curvature Flow of Surface Polygonal Meshes'
 
 The method uses backward Euler scheme and Laplacian on vector-valued 0-forms

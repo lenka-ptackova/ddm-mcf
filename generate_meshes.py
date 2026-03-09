@@ -5,7 +5,7 @@ Copyright (C) 2025, Lenka Ptackova
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License 
 
-This script is a part of implementation of
+This script is a part of implementation of methods supporting the paper
 'Domain Decomposition for Mean Curvature Flow of Surface Polygonal Meshes'
 """
 
@@ -112,6 +112,7 @@ def move_mesh(filename:str) -> list:
     write_mesh_obj(filename+"moved", V, F) 
     return None
 
+
 ####---------------------------------------------------------------
 #### QUADRILATERAL, TRIANGLE, HEXAGONAL MESHES
 ####---------------------------------------------------------------
@@ -189,7 +190,7 @@ def generate_tri_mesh(nF_per_row: int, jitt_level = 0):
 
 
 
-def generate_poly_mesh(nF_per_row: int, times_columns: float = 1):  
+def generate_quad_mesh(nF_per_row: int, times_columns: float = 1):  
     nV_per_row = nF_per_row +1  
     ds = 1/(nF_per_row)
     s0 = 0
@@ -201,12 +202,9 @@ def generate_poly_mesh(nF_per_row: int, times_columns: float = 1):
 
     nF_per_column = int(nF_per_row*times_columns)
     
-    filename = "poly_{}.obj".format(nV_per_row)
+    filename = "quad_{}.obj".format(nV_per_row)
     file = open(filename, "w")
-    
-    for j in range(nV_per_row):
-        x, y = s0 + j*ds, s0
-        file.write("v {:.5f} {:.5f} {:.5f}\n".format(x,y,surface(x,y)))
+
     for i in range(1,nF_per_column):
         for j in range(nV_per_row):
             if j >0 and j<nV_per_row - 1:
@@ -387,6 +385,7 @@ def generate_hex_mesh(nF_per_row: int, jitt_level = 0):
 def generate_wavy_quad(nF_per_row: int):
     """ Generates a special quad mesh, where the underlying parametrization
     is a function of sinus of x and sinus of y ("wavy parametrization")
+    and contains also texture coordinates.
     """
     nV_per_row = nF_per_row +1 
     ds = 1/(nF_per_row)
@@ -399,7 +398,7 @@ def generate_wavy_quad(nF_per_row: int):
 
     surface = F_tex_surface
 ##    surface = superwave_surface
-    filename = "quad_F_{}.obj".format(nV_per_row*nV_per_col)
+    filename = "quad_tex_{}.obj".format(nV_per_row*nV_per_col)
     file = open(filename, "w")
     
     for i in range(nV_per_col):
@@ -587,7 +586,7 @@ def generate_quad_Enneper(nF_per_row: int):
     du = 2/nF_per_row
     v0 = -1
     dv = 2/nF_per_row
-    filename = "Enneper_{}.obj".format(nV_per_row**2)
+    filename = "quad_Enneper_{}.obj".format(nV_per_row**2)
     file = open(filename, "w")   
     for i in range(nV_per_row):
         for j in range(nV_per_row):

@@ -5,7 +5,7 @@ Copyright (C) 2025, Lenka Ptackova
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License 
 
-This script is a part of implementation of
+This script is a part of implementation of methods supporting the paper
 'Domain Decomposition for Mean Curvature Flow of Surface Polygonal Meshes'
 
 The method uses backward Euler scheme and Laplacian on vector-valued 0-forms
@@ -175,19 +175,6 @@ def mcf_ddm_Robin(filename: str, Laplacian: str, maxIter: int, dt: float,\
         nVinRow = int(math.sqrt(len(V)))
     else:
         nVinRow = int(filename.split("_")[-1])
-        
-##    if typ == 3:
-##        nVinRow = int(math.sqrt(len(V)))
-##    elif typ == 4 or typ == 5:
-##        if len(V) == int(filename.split("_")[-1]):
-##            nVinRow = int(math.sqrt(len(V)))
-##        else:
-##            nVinRow = int(filename.split("_")[-1])
-##    elif typ == 6:
-##        nVinRow = int(filename.split("_")[-1])   
-##    else:
-##        print("Unsupported mesh format")
-##        return None
 
     if nVinRow*(divRowV + 1) >= len(V) or divRowV <= 1:
         divRowV = int(0.5*len(V)/nVinRow)

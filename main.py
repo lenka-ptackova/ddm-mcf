@@ -5,9 +5,9 @@ Copyright (C) 2025, Lenka Ptackova
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License 
 
+
 This script is a part of implementation of methods exposed in the paper
 'Domain Decomposition for Mean Curvature Flow of Surface Polygonal Meshes'
-(ID 1076)
 
 There are three Laplacians implemented:
 1) "FU": scale–dependent umbrella operator of Fujiwara (1995)
@@ -77,59 +77,59 @@ def main():
 
 
     ###-------------------------------------------------------
-    ### Examples from the article with ID 1076 ###
+    ### Examples from the paper ###
     ###-------------------------------------------------------
     
     ### Figure 1 (with texture 'stripes.png' mapped on the surfaces in Meshlab)
     
-##    print("---Figure 1---")
-##    mesh_file_name = "meshes/quad_cili_7280_23_65"
-##    maxIteration = 5
-##    dt = 0.05
-##    Laplacians =  ["FU", "AW", "PV"]
-##    names_ddms = []
-##    for Laplacian in Laplacians:        
-##        name_ddm = mcf_ddm_Robin(mesh_file_name, Laplacian, maxIteration, dt,\
-##                                 divRowV = 23, typ = 5)
-##        names_ddms.append(name_ddm)
-##        
-##    names_polys = []
-##    for Laplacian in Laplacians:
-##        name_poly = mcf_poly(mesh_file_name, Laplacian, maxIteration, dt)
-##        names_polys.append(name_poly)
-##
-##    for i in range(len(Laplacians)):
-##        file_name = compare_sets_of_meshes(names_ddms[i], names_polys[i],\
-##                                           np.arange(1,maxIteration+1))
-##        plot_graphs(file_name)
-##
-##    ###-------------------------------------------------------
-##    ### Figure 2 (with texture 'texture_F_tex_surface.png')
-##        
-##    print("---Figure 2---")
-##    mesh_file_name = "meshes/poly_F_tex_6558"
-##    maxIteration = 1
-##    dt = 0.01
-##    Laplacians =  ["FU", "AW", "PV"]
-##    for Laplacian in Laplacians:
-##        name_poly = mcf_poly(mesh_file_name, Laplacian, maxIteration, dt)
-##
-##
-##    ###-------------------------------------------------------
-##    ### Figure 4
-##        
-##    print("---Figure 4---")
-##    mesh_file_name = "meshes/poly_C1_scaled_6558"
-##    maxIteration = 2
-##    dt = 0.05
-##    Laplacians =  ["PV"]
-##    for Laplacian in Laplacians:        
-##        mcf_Schwarz_poly("meshes/poly_C1_scaled_6558_L",\
-##                         "meshes/poly_C1_scaled_6558_U", Laplacian, maxIteration, dt)
-##        
-##    for Laplacian in Laplacians:
-##        mcf_poly(mesh_file_name, Laplacian, maxIteration, dt)
-##        
+    print("---Figure 1---")
+    mesh_file_name = "meshes/quad_cili_7280_23_65"
+    maxIteration = 5
+    dt = 0.05
+    Laplacians =  ["FU", "AW", "PV"]
+    names_ddms = []
+    for Laplacian in Laplacians:        
+        name_ddm = mcf_ddm_Robin(mesh_file_name, Laplacian, maxIteration, dt,\
+                                 divRowV = 23, typ = 5)
+        names_ddms.append(name_ddm)
+        
+    names_polys = []
+    for Laplacian in Laplacians:
+        name_poly = mcf_poly(mesh_file_name, Laplacian, maxIteration, dt)
+        names_polys.append(name_poly)
+
+    for i in range(len(Laplacians)):
+        file_name = compare_sets_of_meshes(names_ddms[i], names_polys[i],\
+                                           np.arange(1,maxIteration+1))
+        plot_graphs(file_name)
+
+    ###-------------------------------------------------------
+    ### Figure 2 (with texture 'texture_F_tex_surface.png')
+        
+    print("---Figure 2---")
+    mesh_file_name = "meshes/poly_F_tex_6558"
+    maxIteration = 1
+    dt = 0.01
+    Laplacians =  ["FU", "AW", "PV"]
+    for Laplacian in Laplacians:
+        name_poly = mcf_poly(mesh_file_name, Laplacian, maxIteration, dt)
+
+
+    ###-------------------------------------------------------
+    ### Figure 4
+        
+    print("---Figure 4---")
+    mesh_file_name = "meshes/poly_C1_scaled_6558"
+    maxIteration = 2
+    dt = 0.05
+    Laplacians =  ["PV"]
+    for Laplacian in Laplacians:        
+        mcf_Schwarz_poly("meshes/poly_C1_scaled_6558_L",\
+                         "meshes/poly_C1_scaled_6558_U", Laplacian, maxIteration, dt)
+        
+    for Laplacian in Laplacians:
+        mcf_poly(mesh_file_name, Laplacian, maxIteration, dt)
+        
 
     ###-------------------------------------------------------
     ### Figure 6
