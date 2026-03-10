@@ -47,7 +47,6 @@ def main():
 ##    mesh_file_name = "meshes/hex_F_tex_scaled2_6118_102"
 ##    mesh_file_name = "meshes/hex_F_tex_scaled2_jit_0.1_6118_102"
 ##    mesh_file_name = "meshes/hex_wave_elongated_12034_102"
-##    mesh_file_name = "meshes/hex_mesh_1972_42"
 
 ##    mesh_file_name = "meshes/poly_C1_scaled_6558"
 ##    mesh_file_name = "meshes/poly_C1_scaled_6558_L"
@@ -56,10 +55,11 @@ def main():
 ##    mesh_file_name = "meshes/poly_square_6558"   
     
 ##    mesh_file_name = "meshes/quad_C1_6561"
-##    mesh_file_name = "meshes/quad_cili_7280_23_65" 
+##    mesh_file_name = "meshes/quad_cili_7280_23_65"
+##    mesh_file_name = "meshes/quad_cili_29510_46_130"
 ##    mesh_file_name = "meshes/quad_cilinder_wavy_7100_100"
 ##    mesh_file_name = "meshes/quad_cilinder_wavy_10200_120"
-##    mesh_file_name = "meshes/quad_F_tex_3721"
+##    mesh_file_name = "meshes/quad_cilinder_wavy_28000_200"
 ##    mesh_file_name = "meshes/quad_F_tex_elongated_5151_51"
 ##    mesh_file_name = "meshes/quad_F_tex_wavy_3721"
 ##    mesh_file_name = "meshes/quad_F_tex_wavy_10201"
@@ -67,7 +67,9 @@ def main():
 ##    mesh_file_name = "meshes/quad_waves_6561"
 ##    mesh_file_name = "meshes/quad_waves_10201"
 ##    mesh_file_name = "meshes/quad_waves_elongated_wavy_11421_81"
-  
+
+##    mesh_file_name = "meshes/tri_anisotropic_cili_10080_120"
+##    mesh_file_name = "meshes/tri_anisotropic_cili_28000_200"
 ##    mesh_file_name = "meshes/tri_C1_6561"
 ##    mesh_file_name = "meshes/tri_C1_10201"
 ##    mesh_file_name = "meshes/tri_C1_jit_0.1_6561"  
